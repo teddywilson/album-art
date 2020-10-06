@@ -6,5 +6,5 @@ Various programmatically generated release covers, __mostly__ done in [two.js](h
 2. Linocut, "LinoButt" (not yet released) [2020]
 
 ```
-NOTE: I don't standby the coding standards/organization of this repository :^)
+NOTE: I don't stand by the coding standards/organization of this repository :^)
 ```
