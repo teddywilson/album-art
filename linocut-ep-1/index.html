@@ -13,12 +13,7 @@
             fullscreen: true,
             autostart: true
         }).appendTo(document.body);
-        // var rect = two.makeRectangle(
-        //     two.width / 2,
-        //     two.height / 2,
-        //     two.width / 2 + two.width / 32,
-        //     two.height - two.height / 32);
-        //rect.fill = 'rgba(0, 200, 255, 0.75)';
+
         const ROTATION = 0.0125;
         const DEGREE = .35;
         const TEXT = ['L', 'I', 'N', 'O', 'C', 'U', 'T'];
@@ -26,6 +21,7 @@
         const LETTER_WIDTH = Math.min(LETTER_HEIGHT, two.width / TEXT.length);
         const TOTAL_HEIGHT = TEXT.length * LETTER_HEIGHT;
         const TOTAL_WIDTH = TEXT.length * LETTER_WIDTH;
+
         var letters = new Array();
         var children = new Array();
         var i;
@@ -38,7 +34,6 @@
                     size: 24,
                     leading: 50,
                     weight: 320,
-                    //fill: i <= 3 ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)
                     fill: 'rgb(255, 255, 255)'
 
                 };
@@ -53,24 +48,8 @@
         }
         var group = two.makeGroup(children);
         group.translation.set(-10, 0);
-        // two.bind('update', function() {
-        //     letters.forEach(function(array, i) {
-        //         array.forEach(function(item, j) {
-        //             if (j % 2 == i % 2) {
-        //                 item.rotation += ROTATION;
-        //             } else {
-        //                 item.rotation -= ROTATION;
-        //             }
-        //         })
-        //     });
-        // });
         letters.forEach(function(array, i) {
             array.forEach(function(item, j) {
-                // if (j % 2 == i % 2) {
-                //     item.rotation = DEGREE;
-                // } else {
-                //     item.rotation = DEGREE * -1;
-                // }
                 item.rotation = Math.random();
             })
         });
