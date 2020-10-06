@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="js/two.min.js"></script>
+</head>
+
+<body>
+    <script>
+        const BLACK = '#000000';
+        const DARK_BLUE = '#0B1C48';
+        const IVORY = '#fcf5f0';
+        const TEAL = '#016367';
+        const ORANGE = '#E66912';
+        const WHITE = '#FFFFFF';
+
+        const WINDOW_SIZE = 600;
+        const RECT_SCALE_FACTOR = 0.45;
+        const RECT_COUNT = 3;
+        const RECT_OFFSET = 8;
+        const RECT_SIZE = WINDOW_SIZE * RECT_SCALE_FACTOR;
+        const BLOCK_TEXT_SIZE = 8;
+        const TRACK_TEXT_SIZE = 12;
+
+        const BLOCK_TEXT = [
+            'Every few months an unknown man comes across two ',
+            'piles of goo and sprinkles each one with a cocktail of mixed salts, ',
+            'fruits, and nuts. Each time, without fail the goo piles gain sentience, ',
+            'clutching their lengths of festooned wood and starting work on new ',
+            'sounds per the direction of the unknown man. The man must continue to ',
+            'sprinkle salts in front of each goo-being in order to keep their ',
+            'spirits high, like twin perpetual motion machines they toil night and ',
+            'day for reasons unknown. The goo-folks don’t know if they like the ',
+            'sounds they make; they don’t know if they can “like” anything. The ',
+            'unknown man doesn’t know if he likes the sounds either, but he ',
+            'nonetheless collects and coallates each one and presents it in a ',
+            'convenient digital form. He also transcribes the very message you are ',
+            'reading right now, dictated to him by the goo-creatures in unison. ',
+            'This is probably the part of the digital square where the color begins ',
+            'to change along a gradient and the unknown man will undoubtedly alter ',
+            'the color of the font to make it more legible. At least we hope he does. ',
+            'The goo-matons will never hear the results of their hard work. This ',
+            'release will coincide with their slow regression back into the primordial ',
+            'form from whence they came. Ashes to ashes, goo to goo -- as the old ',
+            'adage goes. They will likely return for another offering at a later date ',
+            'so long as the unknown Reanimator can collect the necessary materials to ',
+            'restore their consciousness. One can only hope...'
+        ];
+
+        const TRACK_TEXT = [
+            'I.\xa0\xa0\xa0Get off the couch',
+            'II.\xa0\xa0Geeking won\'t help you',
+            'III.\xa0Boring bookish brat',
+            'IV.\xa0Roast pig'
+        ];
+
+        var params = {
+            width: WINDOW_SIZE,
+            height: WINDOW_SIZE,
+            autostart: true
+        };
+        var two = new Two(params).appendTo(document.body);
+
+        var background = two.makeRectangle(
+            two.width / 2,
+            two.height / 2,
+            two.width,
+            two.height);
+        background.fill = IVORY;
+        background.opacity = 0.8;
+        background.noStroke();
+
+        var makeLine = function(startX, startY, endX, endY) {
+            var line = new Two.Line(
+                startX, startY, endX, endY);
+            line.opacity = 0.6;
+            return line;
+        }
+        var lines = new Array();
+        lines.push(makeLine(0, 0, two.width, two.height));
+        lines.push(makeLine(two.width, 0, 0, two.height));
+        two.makeGroup(lines);
+
+        for (var i = 0; i < RECT_COUNT; i++) {
+            var rectX = two.width / 2 + (RECT_OFFSET * i) - RECT_OFFSET;
+            var rectY = two.height / 2 + (RECT_OFFSET * i) - RECT_OFFSET;
+            var rect = two.makeRectangle(
+                rectX,
+                rectY,
+                RECT_SIZE,
+                RECT_SIZE
+            );
+            var isFirst = i == 0;
+            var isLast = i == RECT_COUNT - 1;
+            rect.linewidth = isFirst ? 1.2 : 1;
+            rect.fill = two.makeLinearGradient(
+                0,
+                0,
+                RECT_SIZE,
+                RECT_SIZE,
+                new Two.Stop(0, WHITE, 1),
+                new Two.Stop(1, BLACK, 1)
+            );
+        }
+
+        // Pulled from example
+        var makeSquiggle = function(width, height, phi, two) {
+            var amt = 64;
+            var anchors = [];
+            for (var i = 0; i < amt; i++) {
+                var pct = i / (amt - 1);
+                var theta = pct * Math.PI * 2 * phi + Math.PI / 2;
+                var x = width * pct - width / 2;
+                var y = height / 2 * Math.sin(theta);
+                anchors.push(new Two.Anchor(x, y));
+            }
+            return two.makeCurve(anchors, true);
+
+        };
+
+        var squiggle = makeSquiggle(500, 80, 6, two);
+        squiggle.stroke = TEAL;
+        squiggle.linewidth = 3;
+        squiggle.noFill();
+        squiggle.translation.set(two.width / 2, two.height / 2);
+
+        var circle = two.makeCircle(two.width / 2 + 200, two.height - 150, 50);
+        circle.fill = ORANGE;
+        circle.noStroke();
+
+        var rectCenterX = 90;
+        var rectCenterY = 60;
+        var rectWidth = 154;
+        var rectHeight = 63;
+        var rect = two.makeRectangle(rectCenterX, rectCenterY, rectWidth, rectHeight);
+        rect.fill = DARK_BLUE;
+        rect.noStroke();
+
+        for (var i = 0; i < TRACK_TEXT.length; i++) {
+            var trackText = new Two.Text(
+                TRACK_TEXT[i],
+                rectCenterX - (rectWidth / 2) + 8,
+                rectCenterY - (rectHeight / 2) + (i * (TRACK_TEXT_SIZE + 2)) + 12, {}
+            );
+            trackText.size = TRACK_TEXT_SIZE;
+            trackText.alignment = 'left';
+            trackText.fill = IVORY;
+            trackText.style = 'italic';
+            two.makeGroup(trackText);
+        }
+
+        var releaseText = new Two.Text(
+            "\"LinoButt\"",
+            two.width / 2,
+            two.height / 2 + RECT_SIZE, {}
+        );
+        releaseText.size = 18;
+        releaseText.style = 'italic';
+        two.makeGroup(releaseText);
+
+        var artistText = new Two.Text(
+            "~ LINOCUT ~",
+            two.width / 2,
+            two.height / 2 + RECT_SIZE + 16, {});
+        artistText.weight = 500;
+        two.makeGroup(artistText);
+
+
+        for (var i = 0; i < BLOCK_TEXT.length; i++) {
+            var blockText = new Two.Text(
+                BLOCK_TEXT[i],
+                two.width / 2 + ((RECT_COUNT - 1) * RECT_OFFSET),
+                two.height / 2 + (i * BLOCK_TEXT_SIZE), {}
+            );
+            blockText.size = BLOCK_TEXT_SIZE;
+            blockText.alignment = 'left';
+            two.makeGroup(blockText);
+        }
+
+        two.update();
+    </script>
+</body>
+
+</html>

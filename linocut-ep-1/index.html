@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="js/two.min.js"></script>
+</head>
+
+<body>
+    <img src="brian_square.jpeg" width="670" />
+    <script>
+        var two = new Two({
+            fullscreen: true,
+            autostart: true
+        }).appendTo(document.body);
+        // var rect = two.makeRectangle(
+        //     two.width / 2,
+        //     two.height / 2,
+        //     two.width / 2 + two.width / 32,
+        //     two.height - two.height / 32);
+        //rect.fill = 'rgba(0, 200, 255, 0.75)';
+        const ROTATION = 0.0125;
+        const DEGREE = .35;
+        const TEXT = ['L', 'I', 'N', 'O', 'C', 'U', 'T'];
+        const LETTER_HEIGHT = (two.height / TEXT.length);
+        const LETTER_WIDTH = Math.min(LETTER_HEIGHT, two.width / TEXT.length);
+        const TOTAL_HEIGHT = TEXT.length * LETTER_HEIGHT;
+        const TOTAL_WIDTH = TEXT.length * LETTER_WIDTH;
+        var letters = new Array();
+        var children = new Array();
+        var i;
+        var j;
+        for (i = 0; i < TEXT.length; i++) {
+            letters[i] = new Array(TEXT.length);
+            for (j = 0; j < parseInt(two.height / LETTER_HEIGHT); j++) {
+                var styles = {
+                    family: 'proxima-nova, sans-serif',
+                    size: 24,
+                    leading: 50,
+                    weight: 320,
+                    //fill: i <= 3 ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)
+                    fill: 'rgb(255, 255, 255)'
+
+                };
+                letters[i][j] = two.makeText(
+                    TEXT[i],
+                    i * LETTER_WIDTH + (LETTER_WIDTH / 2),
+                    j * LETTER_HEIGHT + (LETTER_HEIGHT / 2),
+                    styles
+                );
+                children.push(letters[i][j]);
+            }
+        }
+        var group = two.makeGroup(children);
+        group.translation.set(-10, 0);
+        // two.bind('update', function() {
+        //     letters.forEach(function(array, i) {
+        //         array.forEach(function(item, j) {
+        //             if (j % 2 == i % 2) {
+        //                 item.rotation += ROTATION;
+        //             } else {
+        //                 item.rotation -= ROTATION;
+        //             }
+        //         })
+        //     });
+        // });
+        letters.forEach(function(array, i) {
+            array.forEach(function(item, j) {
+                // if (j % 2 == i % 2) {
+                //     item.rotation = DEGREE;
+                // } else {
+                //     item.rotation = DEGREE * -1;
+                // }
+                item.rotation = Math.random();
+            })
+        });
+    </script>
+</body>
+
+</html>
